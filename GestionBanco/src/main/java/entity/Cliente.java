@@ -1,6 +1,8 @@
-package entity;
+package Entity;
 
 public class Cliente {
+	private int id;
+	private String dni;
 private	String nombreusuario;
 private	String clave;
 private	String nombre;
@@ -11,14 +13,29 @@ private	String estado;
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Cliente(String nombreusuario, String clave, String nombre, String domicilio, String correo, String estado) {
+	public Cliente(int id, String dni, String nombreusuario, String clave, String nombre, String domicilio,
+			String correo, String estado) {
 		super();
+		this.id = id;
+		this.dni = dni;
 		this.nombreusuario = nombreusuario;
 		this.clave = clave;
 		this.nombre = nombre;
 		this.domicilio = domicilio;
 		this.correo = correo;
 		this.estado = estado;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getDni() {
+		return dni;
+	}
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 	public String getNombreusuario() {
 		return nombreusuario;
@@ -58,9 +75,4 @@ private	String estado;
 	}
 	
 	
-	
-	
-	
-	
-
 }

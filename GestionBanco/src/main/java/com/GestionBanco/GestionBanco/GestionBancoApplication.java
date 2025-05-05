@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "controller"+"entity")
+@ComponentScan("Controller")
 public class GestionBancoApplication {
 
 	public static void main(String[] args) {
