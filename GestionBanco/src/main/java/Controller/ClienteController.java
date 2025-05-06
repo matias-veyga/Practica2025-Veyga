@@ -44,6 +44,12 @@ public class ClienteController {
 	     listaClientes.add(cliente);
 	     return "redirect:/detalles";
 	 }
+	 
+	 @PostMapping("/eliminar")
+	 public String eliminarCliente( int id) {
+		 listaClientes.removeIf(cliente -> cliente.getId() == id);
+	     return "redirect:/detalles";
+	 }
 
 
 
