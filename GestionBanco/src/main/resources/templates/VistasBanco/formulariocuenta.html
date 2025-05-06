@@ -33,10 +33,13 @@
         </div>
 
         <div class="mb-3">
-		    <label for="cliente" class="form-label">Cliente</label>
-		   <input type="text" class="form-control" th:field="*{cliente}" required>
-		
-
+            <label for="clienteId" class="form-label">Cliente</label>
+            <select name="clienteId" class="form-select" required>
+                <option value="">Seleccionar Cliente</option>
+                <option th:each="cliente : ${clientes}" 
+                        th:value="${cliente.id}" 
+                        th:text="${cliente.nombre }"></option>
+            </select>
         </div>
 
         <div class="mb-3">
@@ -63,8 +66,8 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Guardar Cuenta</button>
-        <a th:href="@{/detallescuenta}" class="btn btn-secondary">Volver a Cuentas</a>
-		<a th:href="@{/detalles}" class="btn btn-secondary">Volver a clientes</a>
+        <a th:href="@{/detallescuenta}" class="btn btn-secondary mt-2">Volver a Cuentas</a>
+        <a th:href="@{/detalles}" class="btn btn-secondary mt-2">Volver a clientes</a>
     </form>
 </div>
 </body>

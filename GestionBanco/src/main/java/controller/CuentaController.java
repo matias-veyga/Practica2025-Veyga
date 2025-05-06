@@ -7,35 +7,54 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import Entity.Cliente;
 import Entity.Cuenta;
 
 @Controller
 public class CuentaController {
-    private List<Cuenta> listaCuenta = new ArrayList<>();
+    private List<Cuenta> listaCuentas = new ArrayList<>();
     
 
 
     @GetMapping("/detallescuenta")
     public String DetallesCuentas(Model model) {
-        model.addAttribute("cuentas", listaCuenta);  
+        model.addAttribute("cuentas", listaCuentas);  
         return "VistasBanco/listacuenta";
     }
 
     @GetMapping("/formulariocuenta")
     public String AltaCuenta(Model model) {
-    	    Cuenta cuenta = new Cuenta();
-    	  
-    	    model.addAttribute("cuenta", cuenta);  
-    	    return "VistasBanco/formulariocuenta";
-    	}
+        Cuenta cuenta = new Cuenta();
+        
+       
+        List<Cliente> clientes = ClienteController.getListaClientes();
+        model.addAttribute("clientes", clientes);
+        model.addAttribute("cuenta", cuenta);  
+        return "VistasBanco/formulariocuenta";
+    }
 
     
 
     @PostMapping("/guardarCuenta")
-    public String guardarCuenta(Cuenta cuenta) {
-        cuenta.setId(listaCuenta.size() + 1);
-        listaCuenta.add(cuenta);
+    public String guardarCuenta(Cuenta cuenta, @RequestParam("clienteId") int clienteId) {
+    
+        Cliente clienteSeleccionado = null;
+        for (Cliente cliente : ClienteController.getListaClientes()) {
+            if (cliente.getId() == clienteId) {
+                clienteSeleccionado = cliente;
+                break;
+            }
+        }
+        
+        
+        cuenta.setCliente(clienteSeleccionado);
+        
+  
+        cuenta.setId(listaCuentas.size() + 1);
+        listaCuentas.add(cuenta);
+        
         return "redirect:/detallescuenta";
     }
 }

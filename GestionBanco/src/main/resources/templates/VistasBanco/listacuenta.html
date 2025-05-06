@@ -17,7 +17,7 @@
         }
         th {
             background-color: #007bff;
-            color: white;
+            color: rgb(0, 0, 0);
         }
         .btn {
             margin-top: 20px;
@@ -41,10 +41,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="cuenta : ${cuenta}">
+        <tr th:each="cuenta : ${cuentas}">
             <td th:text="${cuenta.id}"></td>
-            <td th:text="${cuenta.numerocuenta}" ></td>
-            <td th:text="${cuenta.cliente}"></td>
+            <td th:text="${cuenta.numerocuenta}"></td>
+            <td th:text="${cuenta.cliente.nombre}"></td>
             <td th:text="${cuenta.fechaingreso}"></td>
             <td th:text="${cuenta.saldoactual}"></td>
             <td th:text="${cuenta.estado}"></td>

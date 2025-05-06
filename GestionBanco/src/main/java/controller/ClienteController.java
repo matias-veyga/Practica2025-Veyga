@@ -13,7 +13,7 @@ import Entity.Cliente;
 
 @Controller
 public class ClienteController {
-	private List<Cliente> listaClientes = new ArrayList<>();
+	private static List<Cliente> listaClientes = new ArrayList<>();
 	
 
 
@@ -24,6 +24,9 @@ public class ClienteController {
 	    return "VistasBanco/listadeclientes";
 	}
 
+	public static List<Cliente> getListaClientes() {
+	    return listaClientes;
+	}
 	
 	
 	
@@ -53,7 +56,7 @@ public class ClienteController {
 	     model.addAttribute("clientes", resultado);
 	     return "VistasBanco/listadeclientes";
 	 }
+	 
 
 }
-
 
