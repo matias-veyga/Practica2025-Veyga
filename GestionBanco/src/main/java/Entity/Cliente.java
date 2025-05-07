@@ -1,7 +1,7 @@
 package Entity;
 
 public class Cliente {
-	private Long id;
+	private int id;
 	private String dni;
 private	String nombreusuario;
 private	String clave;
@@ -13,7 +13,7 @@ private	String estado;
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Cliente(Long id, String dni, String nombreusuario, String clave, String nombre, String domicilio,
+	public Cliente(int id, String dni, String nombreusuario, String clave, String nombre, String domicilio,
 			String correo, String estado) {
 		super();
 		this.id = id;
@@ -25,10 +25,10 @@ private	String estado;
 		this.correo = correo;
 		this.estado = estado;
 	}
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getDni() {

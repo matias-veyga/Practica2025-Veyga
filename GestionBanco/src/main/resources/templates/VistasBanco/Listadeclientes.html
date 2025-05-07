@@ -96,7 +96,7 @@
                     <td th:text="${cliente.clave}"></td>
                     <td th:text="${cliente.estado}"></td>
                     <td>
-                        <a href="" class="btn btn-warning">Editar</a>
+                        <a th:href="@{/editar/{dni}(dni=${cliente.dni})}" class="btn btn-warning">Editar</a>
                         <form th:action="@{/eliminar}" method="post" style="display: inline;">
                             <input type="hidden" name="id" th:value="${cliente.id}" />
                             <button type="submit" class="btn btn-danger">Eliminar</button>

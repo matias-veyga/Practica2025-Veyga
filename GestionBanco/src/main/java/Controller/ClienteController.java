@@ -6,9 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import Entity.Cliente;
 import Implement.Service.ClienteService;
@@ -25,9 +26,6 @@ public class ClienteController {
         return "VistasBanco/listadeclientes";
     }
 
-    public static List<Cliente> getListaClientes() {
-        return ClienteService.getListaClientes();
-    }
     
     @GetMapping("/formulario")  
     public String AltaAlumnos(Model model) {
@@ -36,16 +34,15 @@ public class ClienteController {
     }
     
     @PostMapping("/guardar")
-    public String Guardar(@ModelAttribute Cliente cliente, RedirectAttributes redirectAttributes) {
+    public String Guardar(@ModelAttribute Cliente cliente, Model model) {
        
-        if (clienteService.existeDniDuplicado(cliente.getDni(), cliente.getId())) {
-            
-            redirectAttributes.addFlashAttribute("error", "Ya existe un cliente con el DNI: " + cliente.getDni());
+        if (clienteService.existeDniDuplicado(cliente.getDni(), cliente.getId() == 0 ? null : cliente.getId())) {
             
             
-            if (cliente.getId() == null || cliente.getId() == 0) {
+            
+            if (cliente.getId() == 0) {
               
-                redirectAttributes.addFlashAttribute("cliente", cliente);
+            	model.addAttribute("Cliente", "cliente");
                 return "redirect:/formulario";
             } else {
                
@@ -55,13 +52,13 @@ public class ClienteController {
         
       
         clienteService.Guardar(cliente);
-        redirectAttributes.addFlashAttribute("mensaje", "Cliente guardado correctamente");
+       
         return "redirect:/detalles";
     }
     
     @PostMapping("/eliminar")
     public String eliminarCliente(@RequestParam("id") int id) {
-        clienteService.Eliminar((long) id);
+        clienteService.Eliminar(id);
         return "redirect:/detalles";
     }
 
@@ -70,5 +67,11 @@ public class ClienteController {
         List<Cliente> clientesEncontrados = clienteService.buscarClientesPorDni(dni);
         model.addAttribute("clientes", clientesEncontrados);
         return "VistasBanco/listadeclientes";
+    }
+    @GetMapping("/editar/{dni}")
+    public String EditarCliente(@PathVariable String dni, Model model) {
+    	 List<Cliente> clientesEncontrados = clienteService.buscarClientesPorDni(dni);
+    	    model.addAttribute("clientes", clientesEncontrados);
+    	    return "VistasBanco/EditarCliente";
     }
 }

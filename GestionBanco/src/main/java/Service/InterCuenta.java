@@ -5,14 +5,15 @@ import java.util.List;
 import Entity.Cuenta;
 
 public interface InterCuenta {
-public void Guardar(Cuenta cuenta);
-
+	void Guardar(Cuenta cuenta, int clienteId);
 	
-	public void Eliminar(Long id);
+    public void Guardar(Cuenta cuenta);
 	
-	public void Editar(Cuenta cuenta);
+    public void Eliminar(int id);
 	
-    public Cuenta BusqeudaporDni(String dni_cliente);
+    public void Editar(Cuenta cuenta);
+	
+    public Cuenta BusqeudaporNumerocuenta(String numerocuenta);
         
-	public List<Cuenta> getClientes();
+    public List<Cuenta> getCuentas();
 }

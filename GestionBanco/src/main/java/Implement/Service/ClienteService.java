@@ -1,4 +1,3 @@
-
 package Implement.Service;
 
 import java.util.ArrayList;
@@ -14,12 +13,12 @@ public class ClienteService implements InterCliente {
     private static List<Cliente> listaClientes = new ArrayList<>();
    
    
-    public boolean existeDniDuplicado(String dni, Long clienteId) {
+    public boolean existeDniDuplicado(String dni, Integer clienteId) {
         for (Cliente cliente : listaClientes) {
            
             if (cliente.getDni() != null && 
                 cliente.getDni().equals(dni) && 
-                (clienteId == null || !cliente.getId().equals(clienteId))) {
+                (clienteId == null || cliente.getId() != clienteId)) {
                 return true;
             }
         }
@@ -29,12 +28,12 @@ public class ClienteService implements InterCliente {
     @Override
     public void Guardar(Cliente cliente) {
       
-        if (cliente.getId() == null || cliente.getId() == 0) {
+        if (cliente.getId() == 0) {
            
-            Long maxId = 1L;
+            int maxId = 1;
             if (!listaClientes.isEmpty()) {
                 for (Cliente c : listaClientes) {
-                    if (c.getId() != null && c.getId() > maxId) {
+                    if (c.getId() > maxId) {
                         maxId = c.getId();
                     }
                 }
@@ -46,7 +45,7 @@ public class ClienteService implements InterCliente {
             
             boolean clienteExistente = false;
             for (int i = 0; i < listaClientes.size(); i++) {
-                if (listaClientes.get(i).getId().equals(cliente.getId())) {
+                if (listaClientes.get(i).getId() == cliente.getId()) {
                     listaClientes.set(i, cliente);
                     clienteExistente = true;
                     break;
@@ -63,41 +62,31 @@ public class ClienteService implements InterCliente {
     
     
     @Override
-    public void Eliminar(Long Id) {
-        Cliente clienteToRemove = null;
+    public void Eliminar(int id) {
+        Cliente clienteR = null;
         
         for (Cliente cliente : listaClientes) {
-            if (cliente.getId().equals(Id)) {
-                clienteToRemove = cliente;
+            if (cliente.getId() == id) {
+            	clienteR = cliente;
                 break;
             }
         }
         
-        if (clienteToRemove != null) {
-            listaClientes.remove(clienteToRemove);
+        if (clienteR != null) {
+            listaClientes.remove(clienteR);
         }
     }
 
     @Override
     public void Editar(Cliente cliente) {
         for (int i = 0; i < listaClientes.size(); i++) {
-            if (listaClientes.get(i).getId().equals(cliente.getId())) {
+            if (listaClientes.get(i).getId() == cliente.getId()) {
                 listaClientes.set(i, cliente);
                 break;
             }
         }
     }
 
-    @Override
-    public Cliente BusqeudaporDni(String dni_cliente) {
-        for (Cliente cliente : listaClientes) {
-            if (cliente.getDni() != null && cliente.getDni().equals(dni_cliente)) {
-                return cliente;
-            }
-        }
-        return null;
-    }
-    
     public List<Cliente> buscarClientesPorDni(String dni) {
         List<Cliente> resultado = new ArrayList<>();
         for (Cliente cliente : listaClientes) {
