@@ -38,22 +38,9 @@ public class CuentaController {
     
 
     @PostMapping("/guardarCuenta")
-    public String guardarCuenta(Cuenta cuenta, @RequestParam("clienteId") int clienteId) {
+    public String guardarCuenta(Cuenta cuenta, @RequestParam int clienteId) {
     
-        Cliente clienteSeleccionado = null;
-        for (Cliente cliente : ClienteController.getListaClientes()) {
-            if (cliente.getId() == clienteId) {
-                clienteSeleccionado = cliente;
-                break;
-            }
-        }
-        
-        
-        cuenta.setCliente(clienteSeleccionado);
-        
-  
-        cuenta.setId(listaCuentas.size() + 1);
-        listaCuentas.add(cuenta);
+     
         
         return "redirect:/detallescuenta";
     }
