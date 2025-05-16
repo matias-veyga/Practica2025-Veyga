@@ -5,14 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 import Entity.Cliente;
-import Implement.Service.ClienteService;
+import Implement.ClienteService;
 
 @Controller
 public class ClienteController {
@@ -26,7 +24,6 @@ public class ClienteController {
         return "VistasBanco/listadeclientes";
     }
 
-    
     @GetMapping("/formulario")  
     public String AltaAlumnos(Model model) {
         model.addAttribute("cliente", new Cliente());
@@ -34,25 +31,20 @@ public class ClienteController {
     }
     
     @PostMapping("/guardar")
-    public String Guardar(@ModelAttribute Cliente cliente, Model model) {
-       
+    public String Guardar(Cliente cliente, Model model) {
         if (clienteService.existeDniDuplicado(cliente.getDni(), cliente.getId() == 0 ? null : cliente.getId())) {
-            
-            
+            model.addAttribute("error", "DNI ya existente");
             
             if (cliente.getId() == 0) {
-              
-            	model.addAttribute("Cliente", "cliente");
-                return "redirect:/formulario";
+                model.addAttribute("cliente", cliente);
+                return "VistasBanco/formulario";
             } else {
-               
+                model.addAttribute("cliente", cliente);
                 return "redirect:/detalles";
             }
         }
         
-      
         clienteService.Guardar(cliente);
-       
         return "redirect:/detalles";
     }
     
@@ -68,10 +60,15 @@ public class ClienteController {
         model.addAttribute("clientes", clientesEncontrados);
         return "VistasBanco/listadeclientes";
     }
+    
     @GetMapping("/editar/{dni}")
     public String EditarCliente(@PathVariable String dni, Model model) {
-    	 List<Cliente> clientesEncontrados = clienteService.buscarClientesPorDni(dni);
-    	    model.addAttribute("clientes", clientesEncontrados);
-    	    return "VistasBanco/EditarCliente";
+        List<Cliente> clientesEncontrados = clienteService.buscarClientesPorDni(dni);
+        if (!clientesEncontrados.isEmpty()) {
+            model.addAttribute("cliente", clientesEncontrados.get(0));
+            return "VistasBanco/EditarCliente";
+        } else {
+            return "redirect:/detalles";
+        }
     }
 }

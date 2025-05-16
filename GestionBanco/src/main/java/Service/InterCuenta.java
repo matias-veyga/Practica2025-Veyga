@@ -7,13 +7,13 @@ import Entity.Cuenta;
 public interface InterCuenta {
 	void Guardar(Cuenta cuenta, int clienteId);
 	
-    public void Guardar(Cuenta cuenta);
+	void Guardar(Cuenta cuenta);
 	
-    public void Eliminar(int id);
+	void Eliminar(int id);
 	
-    public void Editar(Cuenta cuenta);
+	Cuenta BusqeudaporNumerocuenta(String numerocuenta);
 	
-    public Cuenta BusqeudaporNumerocuenta(String numerocuenta);
-        
-    public List<Cuenta> getCuentas();
+	List<Cuenta> getCuentas();
+	
+	void cambiarEstadoCuenta(String numeroCuenta, String nuevoEstado);
 }

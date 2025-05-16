@@ -2,64 +2,55 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Cuentas Bancarias</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="icon" th:href="@{/Images/Logo.png}">
-	<link rel="stylesheet" th:href="@{/CSS/bootstrap.min.css}">
-	<link rel="stylesheet" th:href="@{/CSS/estilos.css}">
-
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            margin-top: 30px;
-        }
-        h1 {
-            color: #007bff;
-        }
-        th {
-            background-color: #007bff;
-            color: rgb(0, 0, 0);
-        }
-        .btn {
-            margin-top: 20px;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<div class="container">
-    <h1 class="text-center">Lista de Cuentas Bancarias</h1>
-    
-    <table class="table table-bordered table-striped mt-4">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Número de Cuenta</th>
-            <th>Cliente</th>
-            <th>Fecha de Ingreso</th>
-            <th>Saldo Actual</th>
-            <th>Estado</th>
-            <th>Límite de Extracción</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="cuenta : ${cuentas}">
-            <td th:text="${cuenta.id}"></td>
-            <td th:text="${cuenta.numerocuenta}"></td>
-            <td th:text="${cuenta.cliente.nombre}"></td>
-            <td th:text="${cuenta.fechaingreso}"></td>
-            <td th:text="${cuenta.saldoactual}"></td>
-            <td th:text="${cuenta.estado}"></td>
-            <td th:text="${cuenta.limiteextracion}"></td>
-        </tr>
-        </tbody>
-    </table>
+<body class="bg-light">
+<div class="container py-4">
+    <h2 class="text-center mb-4 text-primary">Lista de Cuentas Bancarias</h2>
 
-    <div class="text-center">
-        <a th:href="@{/formulariocuenta}" class="btn btn-primary">Crear Nueva Cuenta</a>
-        <a th:href="@{/detalles}" class="btn btn-secondary">Volver a Clientes</a>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white shadow-sm">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>N° Cuenta</th>
+                <th>Cliente</th>
+                <th>Fecha</th>
+                <th>Saldo</th>
+                <th>Estado</th>
+                <th>Límite</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cuenta : ${cuentas}">
+                <td th:text="${cuenta.id}"></td>
+                <td th:text="${cuenta.numerocuenta}"></td>
+                <td th:text="${cuenta.cliente.nombre}"></td>
+                <td th:text="${cuenta.fechacreacion}"></td>
+                <td th:text="${cuenta.saldoactual}"></td>
+                <td th:text="${cuenta.estado}"></td>
+                <td th:text="${cuenta.limiteextracion}"></td>
+                <td class="d-flex flex-wrap gap-1">
+                    <a class="btn btn-outline-warning btn-sm">Estado</a>
+                    <a th:href="@{/movimientos/deposito/{id}(id=${cuenta.id})}" class="btn btn-outline-success btn-sm">Depósito</a>
+                    <a th:href="@{/movimientos/extraccion/{id}(id=${cuenta.id})}" class="btn btn-outline-primary btn-sm">Extracción</a>
+                    <a th:href="@{/movimientos/historial/{id}(id=${cuenta.id})}" class="btn btn-outline-info btn-sm">Historial</a>
+                    <form th:action="@{/eliminarCuenta}" method="post" class="d-inline">
+                        <input type="hidden" name="id" th:value="${cuenta.id}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-4 d-flex justify-content-center gap-2">
+        <a th:href="@{/formulariocuenta}" class="btn btn-dark">Crear Nueva Cuenta</a>
+        <a th:href="@{/detalles}" class="btn btn-outline-secondary">Volver a Clientes</a>
     </div>
 </div>
 </body>

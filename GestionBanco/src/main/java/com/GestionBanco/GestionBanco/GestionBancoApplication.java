@@ -2,10 +2,12 @@ package com.GestionBanco.GestionBanco;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan({"Controller", "Entity", "Service", "Implement", "com.GestionBanco.GestionBanco"})
+@EntityScan({"Entity"})
 public class GestionBancoApplication {
 
 	public static void main(String[] args) {
