@@ -1,13 +1,14 @@
 package Entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cuenta {
     private int id;
-    private String numerocuenta;
+    private int numerocuenta;
     private Cliente cliente;
-    private String fechacreacion;
+    private LocalDate fechacreacion;
     private double saldoactual;
     private String estado; 
     private double limiteextracion;
@@ -17,7 +18,7 @@ public class Cuenta {
         this.movimientos = new ArrayList<>();
     }
     
-    public Cuenta(int id, String numerocuenta, Cliente cliente, String fechacreacion, 
+    public Cuenta(int id, int numerocuenta, Cliente cliente, LocalDate fechacreacion, 
                  double saldoactual, String estado, double limiteextracion) {
         this();
         this.id = id;
@@ -29,25 +30,72 @@ public class Cuenta {
         this.limiteextracion = limiteextracion;
     }
 
-    // Getters y Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-    public String getNumerocuenta() { return numerocuenta; }
-    public void setNumerocuenta(String numerocuenta) { this.numerocuenta = numerocuenta; }
-    public Cliente getCliente() { return cliente; }
-    public void setCliente(Cliente cliente) { this.cliente = cliente; }
-    public String getFechacreacion() { return fechacreacion; }
-    public void setFechacreacion(String fechacreacion) { this.fechacreacion = fechacreacion; }
-    public double getSaldoactual() { return saldoactual; }
-    public void setSaldoactual(double saldoactual) { this.saldoactual = saldoactual; }
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
-    public double getLimiteextracion() { return limiteextracion; }
-    public void setLimiteextracion(double limiteextracion) { this.limiteextracion = limiteextracion; }
-    public List<Movimiento> getMovimientos() { return movimientos; }
-    public void setMovimientos(List<Movimiento> movimientos) { this.movimientos = movimientos; }
     
-    public void agregarMovimiento(Movimiento movimiento) {
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getNumerocuenta() {
+		return numerocuenta;
+	}
+
+	public void setNumerocuenta(int numerocuenta) {
+		this.numerocuenta = numerocuenta;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public LocalDate getFechacreacion() {
+		return fechacreacion;
+	}
+
+	public void setFechacreacion(LocalDate fechacreacion) {
+		this.fechacreacion = fechacreacion;
+	}
+
+	public double getSaldoactual() {
+		return saldoactual;
+	}
+
+	public void setSaldoactual(double saldoactual) {
+		this.saldoactual = saldoactual;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public double getLimiteextracion() {
+		return limiteextracion;
+	}
+
+	public void setLimiteextracion(double limiteextracion) {
+		this.limiteextracion = limiteextracion;
+	}
+
+	public List<Movimiento> getMovimientos() {
+		return movimientos;
+	}
+
+	public void setMovimientos(List<Movimiento> movimientos) {
+		this.movimientos = movimientos;
+	}
+
+	public void agregarMovimiento(Movimiento movimiento) {
         this.movimientos.add(movimiento);
     }
 }

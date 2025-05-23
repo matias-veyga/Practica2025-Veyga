@@ -2,17 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Crear Cliente</title>
+    <title th:text="${cliente.id == 0 ? 'Alta de Cliente' : 'Editar Cliente'}">Formulario de Cliente</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-<div class="container py-4">
-    <h2 class="text-center mb-4">Registrar Nuevo Cliente</h2>
+<div class="container py-4" style="max-width: 600px;">
+    <h2 class="text-center mb-4" th:text="${cliente.id == 0 ? 'Alta de Cliente' : 'Editar Cliente'}">Formulario de Cliente</h2>
 
-    <form th:object="${cliente}" th:action="@{/guardar}" method="POST" class="bg-white p-4 rounded shadow-sm">
-        <input type="hidden" th:field="*{id}" />
+    <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
 
+    <form th:action="@{/guardar}" th:object="${cliente}" method="post" class="bg-white p-4 rounded shadow-sm">
+        <input type="hidden" th:field="*{id}">
+        
         <div class="mb-3">
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" th:field="*{nombre}" required>
@@ -34,7 +36,7 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Nombre de Usuario</label>
+            <label class="form-label">Usuario</label>
             <input type="text" class="form-control" th:field="*{nombreusuario}" required>
         </div>
 
@@ -51,9 +53,9 @@
             </select>
         </div>
 
-        <div class="d-flex justify-content-between mt-4">
-            <a th:href="@{/detalles}" class="btn btn-outline-secondary">Volver</a>
-            <button type="submit" class="btn btn-dark">Registrar Cliente</button>
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-dark" th:text="${cliente.id == 0 ? 'Guardar Cliente' : 'Guardar Cambios'}">Guardar</button>
+            <a th:href="@{/detalles}" class="btn btn-outline-secondary">Volver a la Lista</a>
         </div>
     </form>
 </div>

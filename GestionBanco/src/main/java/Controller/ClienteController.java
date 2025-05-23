@@ -56,19 +56,30 @@ public class ClienteController {
 
     @GetMapping("/buscar")
     public String buscarPorDni(@RequestParam("Dni") String dni, Model model) {
-        List<Cliente> clientesEncontrados = clienteService.buscarClientesPorDni(dni);
-        model.addAttribute("clientes", clientesEncontrados);
+        Cliente clienteEncontrado = clienteService.buscarClientesPorDni(dni);
+        if (clienteEncontrado != null) {
+            model.addAttribute("clientes", List.of(clienteEncontrado));
+        } else {
+            model.addAttribute("clientes", List.of());
+        }
         return "VistasBanco/listadeclientes";
     }
     
     @GetMapping("/editar/{dni}")
     public String EditarCliente(@PathVariable String dni, Model model) {
-        List<Cliente> clientesEncontrados = clienteService.buscarClientesPorDni(dni);
-        if (!clientesEncontrados.isEmpty()) {
-            model.addAttribute("cliente", clientesEncontrados.get(0));
-            return "VistasBanco/EditarCliente";
+        Cliente clienteEncontrado = clienteService.buscarClientesPorDni(dni);
+        if (clienteEncontrado != null) {
+            model.addAttribute("cliente", clienteEncontrado);
+            return "VistasBanco/formulario";
         } else {
             return "redirect:/detalles";
         }
     }
+
+    @PostMapping("/cambiarEstadoCliente")
+    public String cambiarEstadoCliente(@RequestParam("dni") String dni) {
+        clienteService.cambiarEstadoCliente(dni);
+        return "redirect:/detalles";
+    }
+
 }

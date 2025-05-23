@@ -1,4 +1,5 @@
 package Implement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,9 +61,9 @@ public class CuentaService implements InterCuenta {
     }
 
     @Override
-    public Cuenta BusqeudaporNumerocuenta(String numerocuenta) {
+    public Cuenta BusqeudaporNumerocuenta(int numerocuenta) {
         for (Cuenta cuenta : listaCuentas) {
-            if (cuenta.getNumerocuenta().equals(numerocuenta)) {
+            if (cuenta.getNumerocuenta() == numerocuenta) {
                 return cuenta;
             }
         }
@@ -74,8 +75,12 @@ public class CuentaService implements InterCuenta {
         return new ArrayList<>(listaCuentas);
     }
     
-    private boolean procesarDeposito(Cuenta cuenta, double importe, String fecha) {
+    private boolean procesarDeposito(Cuenta cuenta, double importe, LocalDate fecha) {
         if (cuenta == null || importe <= 0) {
+            return false;
+        }
+        
+        if (!cuenta.getEstado().equals("Habilitado")) {
             return false;
         }
         
@@ -92,18 +97,22 @@ public class CuentaService implements InterCuenta {
         return true;
     }
     
-    public boolean realizarDeposito(String numeroCuenta, double importe) {
+    public boolean realizarDeposito(int numeroCuenta, double importe) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
-        return procesarDeposito(cuenta, importe, null);
+        return procesarDeposito(cuenta, importe, LocalDate.now());
     }
     
-    public boolean realizarDeposito(String numeroCuenta, double importe, String fecha) {
+    public boolean realizarDeposito(int numeroCuenta, double importe, LocalDate fecha) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
         return procesarDeposito(cuenta, importe, fecha);
     }
     
-    private boolean procesarExtraccion(Cuenta cuenta, double importe, String fecha) {
+    private boolean procesarExtraccion(Cuenta cuenta, double importe, LocalDate fecha) {
         if (cuenta == null || importe <= 0) {
+            return false;
+        }
+        
+        if (!cuenta.getEstado().equals("Habilitado")) {
             return false;
         }
         
@@ -124,25 +133,35 @@ public class CuentaService implements InterCuenta {
         return true;
     }
     
-    public boolean realizarExtraccion(String numeroCuenta, double importe) {
+    public boolean realizarExtraccion(int numeroCuenta, double importe) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
-        return procesarExtraccion(cuenta, importe, null);
+        return procesarExtraccion(cuenta, importe, LocalDate.now());
     }
     
-    public boolean realizarExtraccion(String numeroCuenta, double importe, String fecha) {
+    public boolean realizarExtraccion(int numeroCuenta, double importe, LocalDate fecha) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
         return procesarExtraccion(cuenta, importe, fecha);
     }
     
     @Override
-    public void cambiarEstadoCuenta(String numeroCuenta, String nuevoEstado) {
+    public void cambiarEstadoCuenta(int numeroCuenta) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
-        if (cuenta != null && (nuevoEstado.equals("HABILITADA") || nuevoEstado.equals("INHABILITADA"))) {
-            cuenta.setEstado(nuevoEstado);
+        if (cuenta != null) {
+            cuenta.setEstado(cuenta.getEstado().equals("Habilitado") ? "Inhabilitado" : "Habilitado");
+            actualizarCuenta(cuenta);
         }
     }
     
-    public List<Movimiento> obtenerMovimientosPorCuenta(String numeroCuenta) {
+    private void actualizarCuenta(Cuenta cuenta) {
+        for (int i = 0; i < listaCuentas.size(); i++) {
+            if (listaCuentas.get(i).getNumerocuenta() == cuenta.getNumerocuenta()) {
+                listaCuentas.set(i, cuenta);
+                break;
+            }
+        }
+    }
+    
+    public List<Movimiento> obtenerMovimientosPorCuenta(int numeroCuenta) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
         return cuenta != null ? cuenta.getMovimientos() : new ArrayList<>();
     }

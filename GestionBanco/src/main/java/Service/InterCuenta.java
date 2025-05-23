@@ -11,9 +11,9 @@ public interface InterCuenta {
 	
 	void Eliminar(int id);
 	
-	Cuenta BusqeudaporNumerocuenta(String numerocuenta);
+	Cuenta BusqeudaporNumerocuenta(int numerocuenta);
 	
 	List<Cuenta> getCuentas();
 	
-	void cambiarEstadoCuenta(String numeroCuenta, String nuevoEstado);
+	void cambiarEstadoCuenta(int numeroCuenta);
 }

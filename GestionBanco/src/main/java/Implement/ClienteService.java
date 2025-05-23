@@ -2,6 +2,7 @@ package Implement;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import Entity.Cliente;
@@ -61,15 +62,16 @@ public class ClienteService implements InterCliente {
     }
 
     @Override
-    public List<Cliente> buscarClientesPorDni(String dni) {
-        List<Cliente> resultado = new ArrayList<>();
-        if (dni != null) {
-            for (Cliente cliente : listaClientes) {
-                if (dni.equals(cliente.getDni())) {
-                    resultado.add(cliente);
-                }
+    public Cliente buscarClientesPorDni(String dni) {
+        Cliente resultado = null;
+        
+        for (Cliente cliente : listaClientes) {
+            if (dni != null && dni.equalsIgnoreCase(cliente.getDni())) {
+                resultado = cliente;
+                break;
             }
         }
+        
         return resultado;
     }
 
@@ -88,6 +90,15 @@ public class ClienteService implements InterCliente {
         return false;
     }
 
+    @Override
+    public void cambiarEstadoCliente(String dni) {
+        Cliente cliente = buscarClientesPorDni(dni);
+        if (cliente != null) {
+            String nuevoEstado = "Habilitado".equals(cliente.getEstado()) ? "Inhabilitado" : "Habilitado";
+            cliente.setEstado(nuevoEstado);
+            Editar(cliente);
+        }
+    }
 
     @Override
     public List<Cliente> getClientes() {

@@ -11,10 +11,9 @@
     <h2 class="text-center mb-4">Crear Cuenta Bancaria</h2>
 
     <form th:action="@{/guardarCuenta}" th:object="${cuenta}" method="post" class="bg-white p-4 rounded shadow-sm">
-        <div class="mb-3">
-            <label class="form-label">Número de Cuenta</label>
-            <input type="text" class="form-control" th:field="*{numerocuenta}" required>
-        </div>
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{fechacreacion}" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}">
+        <input type="hidden" th:field="*{numerocuenta}">
 
         <div class="mb-3">
             <label class="form-label">Cliente</label>
@@ -27,11 +26,6 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Fecha de Ingreso</label>
-            <input type="date" class="form-control" th:field="*{fechacreacion}" required>
-        </div>
-
-        <div class="mb-3">
             <label class="form-label">Saldo Actual</label>
             <input type="number" step="0.01" class="form-control" th:field="*{saldoactual}" required>
         </div>
@@ -39,8 +33,8 @@
         <div class="mb-3">
             <label class="form-label">Estado</label>
             <select class="form-select" th:field="*{estado}" required>
-                <option value="HABILITADA">Habilitado</option>
-                <option value="INHABILITADA">Inhabilitado</option>
+                <option value="Habilitado">Habilitado</option>
+                <option value="Inhabilitado">Inhabilitado</option>
             </select>
         </div>
 

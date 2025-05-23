@@ -1,16 +1,18 @@
 package Entity;
 
+import java.time.LocalDate;
+
 public class Movimiento {
 	private int id;
 	private Cuenta cuenta;
 	private Double importe;
-	private String fecha;
+	private LocalDate fecha;
 	
 	public Movimiento() {
 		super();
 	}
 	
-	public Movimiento(int id, Cuenta cuenta, Double importe, String fecha) {
+	public Movimiento(int id, Cuenta cuenta, Double importe, LocalDate fecha) {
 		super();
 		this.id = id;
 		this.cuenta = cuenta;
@@ -42,11 +44,11 @@ public class Movimiento {
 		this.importe = importe;
 	}
 	
-	public String getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 	
-	public void setFecha(String fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 }

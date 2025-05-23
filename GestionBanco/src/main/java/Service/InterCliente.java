@@ -14,9 +14,12 @@ public interface InterCliente {
 	
 	public Cliente Busquedaporid(int id);
 	
-	public List<Cliente> buscarClientesPorDni(String dni);
+	public Cliente buscarClientesPorDni(String dni);
 	
 	public List<Cliente> getClientes();
 	
 	public boolean existeDniDuplicado(String dni, Integer idExcluido);
+
+	void cambiarEstadoCliente(String dni);
+
 }
