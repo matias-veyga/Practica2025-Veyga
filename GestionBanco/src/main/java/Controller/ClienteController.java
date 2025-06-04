@@ -1,6 +1,7 @@
 package Controller;
 
 import java.util.List;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,7 @@ public class ClienteController {
     }
 
     @GetMapping("/formulario")  
-    public String AltaAlumnos(Model model) {
+    public String mostrarFormulario(Model model) {
         model.addAttribute("cliente", new Cliente());
         return "VistasBanco/formulario";
     }
@@ -57,16 +58,16 @@ public class ClienteController {
     @GetMapping("/buscar")
     public String buscarPorDni(@RequestParam("Dni") String dni, Model model) {
         Cliente clienteEncontrado = clienteService.buscarClientesPorDni(dni);
+        List<Cliente> clientes = new ArrayList<>();
         if (clienteEncontrado != null) {
-            model.addAttribute("clientes", List.of(clienteEncontrado));
-        } else {
-            model.addAttribute("clientes", List.of());
+            clientes.add(clienteEncontrado);
         }
+        model.addAttribute("clientes", clientes);
         return "VistasBanco/listadeclientes";
     }
     
     @GetMapping("/editar/{dni}")
-    public String EditarCliente(@PathVariable String dni, Model model) {
+    public String editarCliente(@PathVariable String dni, Model model) {
         Cliente clienteEncontrado = clienteService.buscarClientesPorDni(dni);
         if (clienteEncontrado != null) {
             model.addAttribute("cliente", clienteEncontrado);
@@ -75,11 +76,4 @@ public class ClienteController {
             return "redirect:/detalles";
         }
     }
-
-    @PostMapping("/cambiarEstadoCliente")
-    public String cambiarEstadoCliente(@RequestParam("dni") String dni) {
-        clienteService.cambiarEstadoCliente(dni);
-        return "redirect:/detalles";
-    }
-
 }

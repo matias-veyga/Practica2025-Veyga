@@ -19,7 +19,4 @@ public interface InterCliente {
 	public List<Cliente> getClientes();
 	
 	public boolean existeDniDuplicado(String dni, Integer idExcluido);
-
-	void cambiarEstadoCliente(String dni);
-
 }

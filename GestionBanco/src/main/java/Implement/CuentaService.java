@@ -1,5 +1,4 @@
 package Implement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,9 +20,10 @@ public class CuentaService implements InterCuenta {
     @Override
     public void Guardar(Cuenta cuenta, int clienteId) {
         Cliente cliente = clienteService.Busquedaporid(clienteId);
-        if (cliente != null) {
+        if (cliente != null && "Habilitado".equals(cliente.getEstado())) {
             cuenta.setCliente(cliente);
             cuenta.setId(generarNuevoId());
+            cuenta.setEstado(true); // Por defecto, la cuenta se crea habilitada
             listaCuentas.add(cuenta);
         }
     }
@@ -61,9 +61,9 @@ public class CuentaService implements InterCuenta {
     }
 
     @Override
-    public Cuenta BusqeudaporNumerocuenta(int numerocuenta) {
+    public Cuenta BusqeudaporNumerocuenta(String numerocuenta) {
         for (Cuenta cuenta : listaCuentas) {
-            if (cuenta.getNumerocuenta() == numerocuenta) {
+            if (cuenta.getNumerocuenta().equals(numerocuenta)) {
                 return cuenta;
             }
         }
@@ -75,12 +75,8 @@ public class CuentaService implements InterCuenta {
         return new ArrayList<>(listaCuentas);
     }
     
-    private boolean procesarDeposito(Cuenta cuenta, double importe, LocalDate fecha) {
-        if (cuenta == null || importe <= 0) {
-            return false;
-        }
-        
-        if (!cuenta.getEstado().equals("Habilitado")) {
+    private boolean procesarDeposito(Cuenta cuenta, double importe, String fecha) {
+        if (cuenta == null || importe <= 0 || !cuenta.getEstado()) {
             return false;
         }
         
@@ -97,22 +93,18 @@ public class CuentaService implements InterCuenta {
         return true;
     }
     
-    public boolean realizarDeposito(int numeroCuenta, double importe) {
+    public boolean realizarDeposito(String numeroCuenta, double importe) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
-        return procesarDeposito(cuenta, importe, LocalDate.now());
+        return procesarDeposito(cuenta, importe, null);
     }
     
-    public boolean realizarDeposito(int numeroCuenta, double importe, LocalDate fecha) {
+    public boolean realizarDeposito(String numeroCuenta, double importe, String fecha) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
         return procesarDeposito(cuenta, importe, fecha);
     }
     
-    private boolean procesarExtraccion(Cuenta cuenta, double importe, LocalDate fecha) {
-        if (cuenta == null || importe <= 0) {
-            return false;
-        }
-        
-        if (!cuenta.getEstado().equals("Habilitado")) {
+    private boolean procesarExtraccion(Cuenta cuenta, double importe, String fecha) {
+        if (cuenta == null || importe <= 0 || !cuenta.getEstado()) {
             return false;
         }
         
@@ -133,36 +125,28 @@ public class CuentaService implements InterCuenta {
         return true;
     }
     
-    public boolean realizarExtraccion(int numeroCuenta, double importe) {
+    public boolean realizarExtraccion(String numeroCuenta, double importe) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
-        return procesarExtraccion(cuenta, importe, LocalDate.now());
+        return procesarExtraccion(cuenta, importe, null);
     }
     
-    public boolean realizarExtraccion(int numeroCuenta, double importe, LocalDate fecha) {
+    public boolean realizarExtraccion(String numeroCuenta, double importe, String fecha) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
         return procesarExtraccion(cuenta, importe, fecha);
     }
     
     @Override
-    public void cambiarEstadoCuenta(int numeroCuenta) {
+    public void cambiarEstadoCuenta(String numeroCuenta, String nuevoEstado) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
         if (cuenta != null) {
-            cuenta.setEstado(cuenta.getEstado().equals("Habilitado") ? "Inhabilitado" : "Habilitado");
-            actualizarCuenta(cuenta);
+            cuenta.setEstado("HABILITADA".equals(nuevoEstado));
         }
-    }
     
-    private void actualizarCuenta(Cuenta cuenta) {
-        for (int i = 0; i < listaCuentas.size(); i++) {
-            if (listaCuentas.get(i).getNumerocuenta() == cuenta.getNumerocuenta()) {
-                listaCuentas.set(i, cuenta);
-                break;
-            }
-        }
     }
-    
-    public List<Movimiento> obtenerMovimientosPorCuenta(int numeroCuenta) {
+    public List<Movimiento> obtenerMovimientosPorCuenta(String numeroCuenta) {
         Cuenta cuenta = BusqeudaporNumerocuenta(numeroCuenta);
-        return cuenta != null ? cuenta.getMovimientos() : new ArrayList<>();
-    }
-}
+        if (cuenta != null) {
+            return cuenta.getMovimientos();
+        } else {
+            return new ArrayList<>();
+}}}

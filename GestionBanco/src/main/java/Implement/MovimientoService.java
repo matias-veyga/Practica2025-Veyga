@@ -1,6 +1,5 @@
 package Implement;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -53,7 +52,7 @@ public class MovimientoService implements InterMovimiento {
         }
     }
     
-    public boolean realizarDeposito(Cuenta cuenta, Double importe, LocalDate fecha) {
+    public boolean realizarDeposito(Cuenta cuenta, Double importe, String fecha) {
         if (importe <= 0 || cuenta == null) {
             return false;
         }
@@ -69,7 +68,7 @@ public class MovimientoService implements InterMovimiento {
         return true;
     }
     
-    public boolean realizarExtraccion(Cuenta cuenta, Double importe, LocalDate fecha) {
+    public boolean realizarExtraccion(Cuenta cuenta, Double importe, String fecha) {
         if (importe <= 0 || cuenta == null) {
             return false;
         }

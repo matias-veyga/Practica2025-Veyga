@@ -8,13 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import Entity.Cuenta;
-import Entity.Cliente;
 import Implement.ClienteService;
 import Implement.CuentaService;
-import java.util.concurrent.ThreadLocalRandom;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class CuentaController {
@@ -32,26 +27,13 @@ public class CuentaController {
     
     @GetMapping("/formulariocuenta")
     public String mostrarFormularioCuenta(Model model) {
-        Cuenta cuenta = new Cuenta();
-        cuenta.setNumerocuenta(ThreadLocalRandom.current().nextInt(100000, 999999));
-        cuenta.setFechacreacion(LocalDate.now());
-        model.addAttribute("cuenta", cuenta);
-        
-        List<Cliente> clientesHabilitados = new ArrayList<>();
-        for (Cliente cliente : clienteService.getClientes()) {
-            if (cliente.getEstado().equals("Habilitado")) {
-                clientesHabilitados.add(cliente);
-            }
-        }
-        model.addAttribute("clientes", clientesHabilitados);
+        model.addAttribute("cuenta", new Cuenta());
+        model.addAttribute("clientes", clienteService.getClientes());
         return "VistasBanco/formulariocuenta";
     }
     
     @PostMapping("/guardarCuenta")
     public String guardarCuenta(Cuenta cuenta, @RequestParam int clienteId, Model model) {
-        if (cuenta.getFechacreacion() == null) {
-            cuenta.setFechacreacion(LocalDate.now());
-        }
         cuentaService.Guardar(cuenta, clienteId);
         return "redirect:/detallescuenta";
     }
@@ -63,7 +45,7 @@ public class CuentaController {
     }
     
     @GetMapping("/buscarCuenta")
-    public String buscarCuenta(@RequestParam int numeroCuenta, Model model) {
+    public String buscarCuenta(@RequestParam String numeroCuenta, Model model) {
         Cuenta cuenta = cuentaService.BusqeudaporNumerocuenta(numeroCuenta);
         if (cuenta != null) {
             model.addAttribute("cuenta", cuenta);
@@ -75,8 +57,9 @@ public class CuentaController {
     }
     
     @PostMapping("/cambiarEstadoCuenta")
-    public String cambiarEstadoCuenta(@RequestParam("numeroCuenta") int numeroCuenta) {
-        cuentaService.cambiarEstadoCuenta(numeroCuenta);
+    public String cambiarEstadoCuenta(@RequestParam String numeroCuenta, 
+                                    @RequestParam String nuevoEstado) {
+        cuentaService.cambiarEstadoCuenta(numeroCuenta, nuevoEstado);
         return "redirect:/detallescuenta";
     }
 }

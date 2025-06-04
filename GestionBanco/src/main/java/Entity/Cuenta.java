@@ -1,25 +1,25 @@
 package Entity;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cuenta {
     private int id;
-    private int numerocuenta;
+    private String numerocuenta;
     private Cliente cliente;
-    private LocalDate fechacreacion;
+    private String fechacreacion;
     private double saldoactual;
-    private String estado; 
+    private Boolean estado; 
     private double limiteextracion;
     private List<Movimiento> movimientos;
     
     public Cuenta() {
         this.movimientos = new ArrayList<>();
+        this.estado = true; // Por defecto, la cuenta está habilitada
     }
     
-    public Cuenta(int id, int numerocuenta, Cliente cliente, LocalDate fechacreacion, 
-                 double saldoactual, String estado, double limiteextracion) {
+    public Cuenta(int id, String numerocuenta, Cliente cliente, String fechacreacion, 
+                 double saldoactual, Boolean estado, double limiteextracion) {
         this();
         this.id = id;
         this.numerocuenta = numerocuenta;
@@ -31,6 +31,7 @@ public class Cuenta {
     }
 
     
+  
     public int getId() {
 		return id;
 	}
@@ -39,11 +40,11 @@ public class Cuenta {
 		this.id = id;
 	}
 
-	public int getNumerocuenta() {
+	public String getNumerocuenta() {
 		return numerocuenta;
 	}
 
-	public void setNumerocuenta(int numerocuenta) {
+	public void setNumerocuenta(String numerocuenta) {
 		this.numerocuenta = numerocuenta;
 	}
 
@@ -55,11 +56,11 @@ public class Cuenta {
 		this.cliente = cliente;
 	}
 
-	public LocalDate getFechacreacion() {
+	public String getFechacreacion() {
 		return fechacreacion;
 	}
 
-	public void setFechacreacion(LocalDate fechacreacion) {
+	public void setFechacreacion(String fechacreacion) {
 		this.fechacreacion = fechacreacion;
 	}
 
@@ -71,11 +72,11 @@ public class Cuenta {
 		this.saldoactual = saldoactual;
 	}
 
-	public String getEstado() {
+	public Boolean getEstado() {
 		return estado;
 	}
 
-	public void setEstado(String estado) {
+	public void setEstado(Boolean estado) {
 		this.estado = estado;
 	}
 
