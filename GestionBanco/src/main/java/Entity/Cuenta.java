@@ -1,25 +1,44 @@
 package Entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
+@Entity
 public class Cuenta {
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
-    private String numerocuenta;
-    private Cliente cliente;
-    private String fechacreacion;
+	 @ManyToOne
+	 @JoinColumn(name = "Cliente")
+private Cliente cliente;	 
+	 @Basic
+    private int numerocuenta;
+    private LocalDate fechacreacion;
     private double saldoactual;
-    private Boolean estado; 
+    private String estado; 
     private double limiteextracion;
+    
+    @OneToMany(mappedBy = "cuenta")
     private List<Movimiento> movimientos;
     
     public Cuenta() {
+        super();
+        this.estado = "Habilitado";
         this.movimientos = new ArrayList<>();
-        this.estado = true; // Por defecto, la cuenta está habilitada
     }
     
-    public Cuenta(int id, String numerocuenta, Cliente cliente, String fechacreacion, 
-                 double saldoactual, Boolean estado, double limiteextracion) {
+    public Cuenta(int id, int numerocuenta, Cliente cliente, LocalDate fechacreacion, 
+                 double saldoactual, String estado, double limiteextracion) {
         this();
         this.id = id;
         this.numerocuenta = numerocuenta;
@@ -31,7 +50,6 @@ public class Cuenta {
     }
 
     
-  
     public int getId() {
 		return id;
 	}
@@ -40,11 +58,11 @@ public class Cuenta {
 		this.id = id;
 	}
 
-	public String getNumerocuenta() {
+	public int getNumerocuenta() {
 		return numerocuenta;
 	}
 
-	public void setNumerocuenta(String numerocuenta) {
+	public void setNumerocuenta(int numerocuenta) {
 		this.numerocuenta = numerocuenta;
 	}
 
@@ -56,11 +74,11 @@ public class Cuenta {
 		this.cliente = cliente;
 	}
 
-	public String getFechacreacion() {
+	public LocalDate getFechacreacion() {
 		return fechacreacion;
 	}
 
-	public void setFechacreacion(String fechacreacion) {
+	public void setFechacreacion(LocalDate fechacreacion) {
 		this.fechacreacion = fechacreacion;
 	}
 
@@ -72,11 +90,11 @@ public class Cuenta {
 		this.saldoactual = saldoactual;
 	}
 
-	public Boolean getEstado() {
+	public String getEstado() {
 		return estado;
 	}
 
-	public void setEstado(Boolean estado) {
+	public void setEstado(String estado) {
 		this.estado = estado;
 	}
 

@@ -1,7 +1,22 @@
 package Entity;
 
+import java.util.Set;
+
+import jakarta.persistence.Basic;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+@Entity
 public class Cliente {
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int id;
+	 @OneToMany(mappedBy = "cliente")
+	 private Set<Cuenta> cuenta;
+	 @Basic
 	private String dni;
 	private String nombreusuario;
 	private String clave;
@@ -12,6 +27,7 @@ public class Cliente {
 	
 	public Cliente() {
 		super();
+		this.estado = "Habilitado";
 	}
 	
 	public Cliente(int id, String dni, String nombreusuario, String clave, String nombre, String domicilio,

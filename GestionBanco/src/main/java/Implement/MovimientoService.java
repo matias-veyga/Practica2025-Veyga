@@ -1,58 +1,42 @@
 package Implement;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import Entity.Cuenta;
 import Entity.Movimiento;
+import Repository.MovimientoRepository;
 import Service.InterMovimiento;
 
 @Service
 public class MovimientoService implements InterMovimiento {
     
-    private List<Movimiento> listaMovimientos = new ArrayList<>();
+    @Autowired
+    private MovimientoRepository movimientoRepository;
     
     @Override
     public List<Movimiento> listar() {
-        return listaMovimientos;
+        return movimientoRepository.findAll();
     }
     
     @Override
     public Movimiento guardar(Movimiento movimiento) {
-        movimiento.setId(listaMovimientos.size() + 1);
-        listaMovimientos.add(movimiento);
-        return movimiento;
+        return movimientoRepository.save(movimiento);
     }
     
     @Override
     public List<Movimiento> buscarPorCuenta(Cuenta cuenta) {
-        List<Movimiento> movimientosCuenta = new ArrayList<>();
-        for (Movimiento mov : listaMovimientos) {
-            if (mov.getCuenta().getId() == cuenta.getId()) {
-                movimientosCuenta.add(mov);
-            }
-        }
-        return movimientosCuenta;
+        return movimientoRepository.findByCuenta(cuenta);
     }
     
     @Override
     public void eliminar(int id) {
-        Movimiento movimientoAEliminar = null;
-        
-        for (Movimiento movimiento : listaMovimientos) {
-            if (movimiento.getId() == id) {
-                movimientoAEliminar = movimiento;
-                break;
-            }
-        }
-        
-        if (movimientoAEliminar != null) {
-            listaMovimientos.remove(movimientoAEliminar);
-        }
+        movimientoRepository.deleteById(id);
     }
     
-    public boolean realizarDeposito(Cuenta cuenta, Double importe, String fecha) {
+    public boolean realizarDeposito(Cuenta cuenta, Double importe, LocalDate fecha) {
         if (importe <= 0 || cuenta == null) {
             return false;
         }
@@ -68,7 +52,7 @@ public class MovimientoService implements InterMovimiento {
         return true;
     }
     
-    public boolean realizarExtraccion(Cuenta cuenta, Double importe, String fecha) {
+    public boolean realizarExtraccion(Cuenta cuenta, Double importe, LocalDate fecha) {
         if (importe <= 0 || cuenta == null) {
             return false;
         }

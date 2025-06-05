@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"Controller", "Entity", "Service", "Implement", "com.GestionBanco.GestionBanco"})
-@EntityScan({"Entity"})
+@ComponentScan({"Controller", "Entity", "Service", "Implement","Repository", "com.GestionBanco.GestionBanco"})
+@EntityScan("Entity")
 public class GestionBancoApplication {
 
 	public static void main(String[] args) {
