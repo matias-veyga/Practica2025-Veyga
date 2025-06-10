@@ -32,10 +32,11 @@ public class ClienteController {
     
     @PostMapping("/guardar")
     public String Guardar(Cliente cliente, Model model) {
-        if (clienteService.existeDniDuplicado(cliente.getDni(), cliente.getId() == 0 ? null : cliente.getId())) {
+        Integer id = cliente.getId();
+        if (clienteService.existeDniDuplicado(cliente.getDni(), id == null || id == 0 ? null : id)) {
             model.addAttribute("error", "DNI ya existente");
             
-            if (cliente.getId() == 0) {
+            if (id == null || id == 0) {
                 model.addAttribute("cliente", cliente);
                 return "VistasBanco/formulario";
             } else {

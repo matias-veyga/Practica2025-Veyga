@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/movimientos")
@@ -77,24 +78,17 @@ public class MovimientoController {
     
     @GetMapping("/historial/{id}")
     public String verHistorial(@PathVariable int id, Model model) {
-        Cuenta cuentaSeleccionada = null;
-        List<Cuenta> cuentas = cuentaService.getCuentas();
+        Optional<Cuenta> cuentaOptional = cuentaService.BusquedaporId(id);
         
-        for (Cuenta c : cuentas) {
-            if (c.getId() == id) {
-                cuentaSeleccionada = c;
-                break;
-            }
-        }
-        
-        if (cuentaSeleccionada != null) {
+        if (cuentaOptional.isPresent()) {
+            Cuenta cuentaSeleccionada = cuentaOptional.get();
             model.addAttribute("cuenta", cuentaSeleccionada);
-            model.addAttribute("movimientos", cuentaSeleccionada.getMovimientos());
-        } else {
-            return "redirect:/detallescuenta";
+            List<Movimiento> movimientos = movimientoService.buscarPorCuenta(cuentaSeleccionada);
+            model.addAttribute("movimientos", movimientos);
+            return "VistasBanco/detallescuentas";
         }
         
-        return "VistasBanco/detallescuentas";
+        return "redirect:/detallescuenta";
     }
     
     @PostMapping("/procesarDeposito/{id}")
@@ -103,24 +97,17 @@ public class MovimientoController {
                                  @RequestParam("fecha") String fechaStr,
                                  RedirectAttributes redirectAttributes) {
         
-        Cuenta cuenta = null;
-        List<Cuenta> cuentas = cuentaService.getCuentas();
+        Optional<Cuenta> cuentaOptional = cuentaService.BusquedaporId(id);
         
-        for (Cuenta c : cuentas) {
-            if (c.getId() == id) {
-                cuenta = c;
-                break;
-            }
-        }
-        
-        if (cuenta != null) {
+        if (cuentaOptional.isPresent()) {
+            Cuenta cuenta = cuentaOptional.get();
             if (!cuenta.getEstado().equals("Habilitado")) {
                 redirectAttributes.addFlashAttribute("error", "No se pueden realizar operaciones en una cuenta inhabilitada");
                 return "redirect:/detallescuenta";
             }
             
             LocalDate fecha = LocalDate.parse(fechaStr);
-            boolean exito = cuentaService.realizarDeposito(cuenta.getNumerocuenta(), importe, fecha);
+            boolean exito = movimientoService.realizarDeposito(cuenta, importe, fecha);
             if (!exito) {
                 redirectAttributes.addFlashAttribute("error", "No se pudo realizar el depósito. Verifique que la cuenta esté habilitada.");
             }
@@ -135,24 +122,17 @@ public class MovimientoController {
                                    @RequestParam("fecha") String fechaStr,
                                    RedirectAttributes redirectAttributes) {
         
-        Cuenta cuenta = null;
-        List<Cuenta> cuentas = cuentaService.getCuentas();
+        Optional<Cuenta> cuentaOptional = cuentaService.BusquedaporId(id);
         
-        for (Cuenta c : cuentas) {
-            if (c.getId() == id) {
-                cuenta = c;
-                break;
-            }
-        }
-        
-        if (cuenta != null) {
+        if (cuentaOptional.isPresent()) {
+            Cuenta cuenta = cuentaOptional.get();
             if (!cuenta.getEstado().equals("Habilitado")) {
                 redirectAttributes.addFlashAttribute("error", "No se pueden realizar operaciones en una cuenta inhabilitada");
                 return "redirect:/detallescuenta";
             }
             
             LocalDate fecha = LocalDate.parse(fechaStr);
-            boolean exito = cuentaService.realizarExtraccion(cuenta.getNumerocuenta(), importe, fecha);
+            boolean exito = movimientoService.realizarExtraccion(cuenta, importe, fecha);
             if (!exito) {
                 redirectAttributes.addFlashAttribute("error", "No se pudo realizar la extracción. Verifique que tenga saldo suficiente y no exceda el límite de extracción.");
             }

@@ -16,7 +16,7 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Cuenta {
 	 @Id
-	    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 	 @ManyToOne
 	 @JoinColumn(name = "Cliente")

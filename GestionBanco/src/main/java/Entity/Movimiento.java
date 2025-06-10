@@ -13,13 +13,11 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Movimiento {
 	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	 @ManyToOne
-	 @JoinColumn(name = "Movimiento")
-	 
-@Basic
+	@ManyToOne
+	@JoinColumn(name = "cuenta_id")
 	private Cuenta cuenta;
 	private Double importe;
 	private LocalDate fecha;

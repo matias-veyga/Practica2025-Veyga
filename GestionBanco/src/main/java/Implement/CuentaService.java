@@ -47,6 +47,11 @@ public class CuentaService implements InterCuenta {
     }
 
     @Override
+    public Optional<Cuenta> BusquedaporId(int id) {
+        return cuentaRepository.findById(id);
+    }
+
+    @Override
     public List<Cuenta> getCuentas() {
         return cuentaRepository.findAll();
     }

@@ -16,6 +16,9 @@ public class MovimientoService implements InterMovimiento {
     @Autowired
     private MovimientoRepository movimientoRepository;
     
+    @Autowired
+    private CuentaService cuentaService;
+    
     @Override
     public List<Movimiento> listar() {
         return movimientoRepository.findAll();
@@ -42,6 +45,7 @@ public class MovimientoService implements InterMovimiento {
         }
         
         cuenta.setSaldoactual(cuenta.getSaldoactual() + importe);
+        cuentaService.Guardar(cuenta);
         
         Movimiento movimiento = new Movimiento();
         movimiento.setCuenta(cuenta);
@@ -62,6 +66,7 @@ public class MovimientoService implements InterMovimiento {
         }
         
         cuenta.setSaldoactual(cuenta.getSaldoactual() - importe);
+        cuentaService.Guardar(cuenta);
         
         Movimiento movimiento = new Movimiento();
         movimiento.setCuenta(cuenta);

@@ -46,12 +46,15 @@ public class ClienteService implements InterCliente {
     }
 
     @Override
-    public boolean existeDniDuplicado(String dni, int id) {
+    public boolean existeDniDuplicado(String dni, Integer id) {
+        if (dni == null) {
+            return false;
+        }
         Cliente clienteExistente = client.findByDni(dni);
         if (clienteExistente == null) {
             return false;
         }
-        return clienteExistente.getId() != id;
+        return id == null ? true : clienteExistente.getId() != id;
     }
 
 

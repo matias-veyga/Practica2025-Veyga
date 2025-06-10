@@ -12,7 +12,7 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Cliente {
 	 @Id
-	    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	 @OneToMany(mappedBy = "cliente")
 	 private Set<Cuenta> cuenta;

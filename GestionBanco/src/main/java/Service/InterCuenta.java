@@ -1,6 +1,7 @@
 package Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import Entity.Cuenta;
 
@@ -17,4 +18,6 @@ public interface InterCuenta {
 	void cambiarEstadoCuenta(int numeroCuenta);
 
 	Cuenta BusquedaporNumerocuenta(int numerocuenta);
+	
+	Optional<Cuenta> BusquedaporId(int id);
 }
